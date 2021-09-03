@@ -33,7 +33,7 @@ There is a web app where an emergency worker can input a new message and get cla
    
  ### Download and Installation
  ```sh
-git clone https://github.com/petitblue/Udacity_Data_Science.git
+git clone https://github.com/petitblue/disaster-response-pipeline.git
 ```
  
  While in the project's root directory disaster-response-pipeline run the ETL pipeline that cleans and stores data in database.

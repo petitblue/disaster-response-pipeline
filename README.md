@@ -42,6 +42,7 @@ There is a web app where an emergency worker can input a new message and get cla
 - \model
 	- train_classifier.py: classification code
    	- custom_extractor.py: python package that build a class to extract disaster related words
+	- classifier.pkl: model saved as a pickle file
 ```
 
 ## Installation

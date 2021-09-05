@@ -2,22 +2,47 @@
 ## Table of Contents
 1. [Project Overview](#project-overview)
 2. [Project Components](#project-components)
-3. [Installation](#installation)
-4. [liscense](#liscense)
+3. [File Description](#file-description)
+4. [Installation](#installation)
+
 ## Project Overview
 This project is part of the [Udacity Data Science Nano Degree Program](https://www.udacity.com/course/data-scientist-nanodegree--nd025)and supported by [Appen](https://appen.com/). This project will analyze a [data set](https://github.com/petitblue/Udacity_Data_Science/tree/main/Project%202%20Disaster%20Response%20Pipeline/data) containing real messages that were sent during disaster events. Those messages are sent from social media or from disaster response organizations. This project will build a ETL pipeline to load and process data, and a machine learning pipeline to classify those messages so as to send them to an appropriate disaster relief agency.
-## 2. Project Components
+## Project Components
 There are three components in the project.
 ### 1. ETL Pipeline
-Loads the message.csv and categories.csv files and merges two datasets
-clean data and stores it in a SQLite database
+- Loads the message.csv and categories.csv files 
+- merges two datasets
+- clean data 
+- stores it in a SQLite database
 ### 2. ML Pipeline
-Build a test processing and maching learning pipline
-Train and tunes a model using GridSearchCV
+- Load cleaned data from database
+- Build a test processing and maching learning pipline
+- Used different models and evaluate accuracy
+- Apply feature union to improve model 
+- Train and tunes a model using GridSearchCV
 ### 3. Flask Web App
 There is a web app where an emergency worker can input a new message and get classification results in several categories. The web app will also display visualizations of the data.
 
 
+##File Description
+```sh
+- README.md: read me file
+- ETL Pipeline Preparation.ipynb: ETL pipeline preparation code
+- ML Pipeline Preparation.ipynb: ML pipeline preparation code
+- \app
+	- run.py: flask file to run the app
+   - \templates
+		- master.html: main page of the web application 
+		- go.html: result web page
+- \data
+	- disaster_categories.csv: categories dataset
+	- disaster_messages.csv: messages dataset
+	- DisasterResponse.db: disaster response database
+	- process_data.py: ETL process to clean up data
+- \model
+	- train_classifier.py: classification code
+   - custom_extractor.py: python package that build a class to extract disaster related words
+'''
 ## Installation
 ### Devendencies :
    - [python (>=3.6)](https://www.python.org/downloads/)  
@@ -51,5 +76,5 @@ python run.py
 ```
 Finally, go to http://0.0.0.0:3001/ or http://localhost:3001/ in your web-browser.
 Type a message input box and click on the Classify Message button to see the various categories that your message falls into.
-## liscense
+
 

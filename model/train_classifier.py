@@ -140,7 +140,9 @@ def evaluate_model(model, X_test, Y_test, category_names):
         print('Category: {} '.format(category_names[i]))
         print(classification_report(Y_test.iloc[:, i].values, y_pred[:, i]))
         print('Accuracy {}\n\n'.format(accuracy_score(Y_test.iloc[:, i].values, y_pred[:, i])))
-    
+    accuracy = (y_pred == y_test).mean()
+    print('The model accuracy is {:.3f}'.format(accuracy))
+
 
 def save_model(model, model_filepath):
     '''

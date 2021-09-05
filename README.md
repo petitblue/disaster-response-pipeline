@@ -31,7 +31,7 @@ There is a web app where an emergency worker can input a new message and get cla
 - ML Pipeline Preparation.ipynb: ML pipeline preparation code
 - \app
 	- run.py: flask file to run the app
-   - \templates
+   	- \templates
 		- master.html: main page of the web application 
 		- go.html: result web page
 - \data
@@ -41,7 +41,7 @@ There is a web app where an emergency worker can input a new message and get cla
 	- process_data.py: ETL process to clean up data
 - \model
 	- train_classifier.py: classification code
-   - custom_extractor.py: python package that build a class to extract disaster related words
+   	- custom_extractor.py: python package that build a class to extract disaster related words
 ```
 
 ## Installation

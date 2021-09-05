@@ -24,7 +24,7 @@ There are three components in the project.
 There is a web app where an emergency worker can input a new message and get classification results in several categories. The web app will also display visualizations of the data.
 
 
-##File Description
+## File Description
 ```sh
 - README.md: read me file
 - ETL Pipeline Preparation.ipynb: ETL pipeline preparation code
@@ -42,7 +42,8 @@ There is a web app where an emergency worker can input a new message and get cla
 - \model
 	- train_classifier.py: classification code
    - custom_extractor.py: python package that build a class to extract disaster related words
-'''
+```
+
 ## Installation
 ### Devendencies :
    - [python (>=3.6)](https://www.python.org/downloads/)  

@@ -117,11 +117,11 @@ def build_model():
         ('clf', MultiOutputClassifier(estimator=XGBClassifier(max_depth=6)))
     ])
     # create grid search parameters
-    # parameters = { 'clf__estimator__n_estimators': [100,150]}
+    parameters = { 'clf__estimator__n_estimators': [50,100]}
     # create grid search object
-    # model = GridSearchCV(xgb_pipeline, param_grid=parameters, scoring='recall_micro', cv=3)
+    model = GridSearchCV(xgb_pipeline, param_grid=parameters, scoring='recall_micro')
     
-    return xgb_pipeline
+    return model
 
 
 def evaluate_model(model, X_test, y_test):

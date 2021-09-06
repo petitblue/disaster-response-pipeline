@@ -22,7 +22,8 @@ from sklearn.model_selection import GridSearchCV
 from xgboost import XGBClassifier
 from custom_extractor import DisasterWordExtractor
 
-def load_data(database_filepath):
+
+def load_data(database_filepath,table_name='cleaned_data'):
     '''
     Function to load data from sqlite database and set X and y for modeling preparation
     
@@ -30,13 +31,12 @@ def load_data(database_filepath):
         - X: array of messages
         - y: target dataframe
     '''
-    engine = create_engine('sqlite:///DisasterRespond.db')
-    df = pd.read_sql('cleaned_data',con = engine)
+    engine = create_engine('sqlite:///{}'.format(database_filepath))
+    df = pd.read_sql_table(table_name, con=engine)
     # define feature and target variables X and y
     X = df['message'].values
     y = df[df.columns[4:]]
-    category_names = y.columns.tolist()
-    return X, y, category_names
+    return X, y
 
 
 url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
@@ -110,38 +110,40 @@ def build_model():
         ('features', FeatureUnion([
             ('text_pipeline', Pipeline([
                 ('vect', CountVectorizer(tokenizer=tokenize)),
-                ('tfidf', TfidfTransformer())])),
+                ('tfidf', TfidfTransformer())
+                ])),
             ('disaster_words', DisasterWordExtractor())
         ])),
         ('clf', MultiOutputClassifier(estimator=XGBClassifier(max_depth=6)))
     ])
-    parameters = parameters = { 'clf__estimator__n_estimators': [100,150]}
+    # create grid search parameters
+    # parameters = { 'clf__estimator__n_estimators': [100,150]}
     # create grid search object
-    model = GridSearchCV(xgb_pipeline, param_grid=parameters, scoring='recall_micro', cv=4)
+    # model = GridSearchCV(xgb_pipeline, param_grid=parameters, scoring='recall_micro', cv=3)
     
-    return model
+    return xgb_pipeline
 
 
-def evaluate_model(model, X_test, Y_test, category_names):
+def evaluate_model(model, X_test, y_test):
     '''
     Function to evaluate the model for each category of the dataset
     INPUT: 
         -model: the classification model
         -X_test: the feature variable
-        -Y_test: the target variable
-        -category_names: list
+        -y_test: the target variable
+
     OUTPUT:
         Classification report and accuracy score
     '''
     y_pred = model.predict(X_test)
-    
     # Calculate the accuracy for each of them.
-    for i in range(len(category_names)):
-        print('Category: {} '.format(category_names[i]))
-        print(classification_report(Y_test.iloc[:, i].values, y_pred[:, i]))
-        print('Accuracy {}\n\n'.format(accuracy_score(Y_test.iloc[:, i].values, y_pred[:, i])))
-    accuracy = (y_pred == y_test).mean()
-    print('The model accuracy is {:.3f}'.format(accuracy))
+    i = 0
+    for col in y_test:
+        print('Feature {}:{}'.format(i+1,col))
+        print(classification_report(y_test[col],y_pred[:,i]))
+        i = i+1
+    accuracy = (y_pred == y_test.values).mean()
+    print('The model accuracy score is {:.3f}'.format(accuracy))
 
 
 def save_model(model, model_filepath):
@@ -160,17 +162,17 @@ def main():
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
-        X, Y, category_names = load_data(database_filepath)
-        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+        X, y = load_data(database_filepath)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
         
         print('Building model...')
         model = build_model()
         
         print('Training model...')
-        model.fit(X_train, Y_train)
+        model.fit(X_train, y_train)
         
         print('Evaluating model...')
-        evaluate_model(model, X_test, Y_test, category_names)
+        evaluate_model(model, X_test, y_test)
 
         print('Saving model...\n    MODEL: {}'.format(model_filepath))
         save_model(model, model_filepath)

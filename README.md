@@ -70,7 +70,9 @@ python data/process_data.py data/disaster_messages.csv data/disaster_categories.
 ```
 
  Next, run the ML pipeline that trains the classifier and save it.
-'python model/train_classifier.py data/DisasterResponse.db model/classifier.pkl'
+```sh
+python model/train_classifier.py data/DisasterResponse.db model/classifier.pkl
+```
 Next, change directory into the app directory and run the Python file run.py.
 ```sh
 cd app
